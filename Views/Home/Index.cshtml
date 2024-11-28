@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <div class="mt-3" hx-get="/Htmx/DetallesCliente/1" hx-target="this" hx-trigger="load, detalleClienteChange from:body">
+        cargando ...
+    </div>
+
+
+    <div id="id-modal-block" class="modal">
+        <div id="id-modal-dialog-block" class="modal-dialog modal-fullscreen" hx-target="this">
+        </div>
+    </div>
+
+    <script>
+
+        const myModal = new bootstrap.Modal(document.getElementById('id-modal-block'));
+
+        htmx.on('htmx:afterSwap', (e) => {
+            if (e.detail.target.id == 'id-modal-dialog-block') {
+                myModal.show();
+            }
+        });
+
+        htmx.on('htmx:beforeSwap', (e) => {
+            if (e.detail.target.id == 'id-modal-dialog-block' && !e.detail.xhr.response) {
+                myModal.hide()
+            }
+        })
+    </script>
+
+</div>

@@ -1,0 +1,57 @@
+﻿@using GranDanesWebApp.Models.Entidades
+@model ClienteViewModel
+
+<form hx-post="@Url.Action("ModificarCliente", "Htmx", new { id = Model.ClienteID })" class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Modificar Cliente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body">
+        <h3>Modificar Cliente</h3>
+
+        <!-- Mostrar el ClienteID -->
+        <div>
+            <label for="ClienteID">ID del Cliente:</label>
+            <strong>@Model.ClienteID</strong>
+        </div>
+
+        <!-- Mostrar mensajes de validación generales -->
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div>
+            <label for="Nombre">Nombre:</label>
+            <input type="text" id="Nombre" name="Nombre" value="@Model.Nombre" required />
+            @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            <label for="Apellido">Apellido:</label>
+            <input type="text" id="Apellido" name="Apellido" value="@Model.Apellido" required />
+            @Html.ValidationMessageFor(model => model.Apellido, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            <label for="Email">Email:</label>
+            <input type="email" id="Email" name="Email" value="@Model.Email" required />
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            <label for="Telefono">Teléfono:</label>
+            <input type="text" id="Telefono" name="Telefono" value="@Model.Telefono" required />
+            @Html.ValidationMessageFor(model => model.Telefono, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            <label for="Direccion">Dirección:</label>
+            <input type="text" id="Direccion" name="Direccion" value="@Model.Direccion" required />
+            @Html.ValidationMessageFor(model => model.Direccion, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            <label for="NuevaContraseña">Nueva Contraseña:</label>
+            <input type="password" id="NuevaContraseña" name="NuevaContraseña" />
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Modificar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+    </div>
+</form>

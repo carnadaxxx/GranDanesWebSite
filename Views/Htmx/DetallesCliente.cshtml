@@ -1,0 +1,20 @@
+﻿@using GranDanesWebApp.Models.Entidades
+@model Cliente
+
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">Detalles del Cliente</h5>
+        <p><strong>ID:</strong> @Model.ClienteID</p>
+        <p><strong>Nombre:</strong> @Model.Nombre</p>
+        <p><strong>Apellido:</strong> @Model.Apellido</p>
+        <p><strong>Email:</strong> @Model.Email</p>
+        <p><strong>Teléfono:</strong> @Model.Telefono</p>
+        <p><strong>Dirección:</strong> @Model.Direccion</p>
+        <p><strong>Fecha de Registro:</strong> @Model.FechaRegistro?.ToString("dd/MM/yyyy")</p>
+        <p><strong>Visible:</strong> @(Model.Visible.HasValue && Model.Visible.Value ? "Sí" : "No")</p>
+        <p><strong>Último Acceso:</strong> @Model.UltimoAcceso?.ToString("dd/MM/yyyy HH:mm:ss")</p>
+
+        <button hx-get="@Url.Action("ModificarCliente", "Htmx", new {id = Model.ClienteID})" hx-sawp="innerHTML" hx-trigger="click" hx-target="#id-modal-dialog-block" type="button" class="btn btn-primary">Modificar</button>
+
+    </div>
+</div>
