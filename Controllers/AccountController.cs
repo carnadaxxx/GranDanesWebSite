@@ -54,8 +54,7 @@ namespace GranDanesWebSite.Controllers
 
             return View(model);
         }
-
-        [HttpPost]
+  
         public IActionResult Logout()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).Wait();
