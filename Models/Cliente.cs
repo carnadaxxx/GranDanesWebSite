@@ -1,4 +1,4 @@
-﻿namespace GranDanesWebApp.Models.Entidades
+﻿namespace GranDanesWebSite.Models
 {
     public class Cliente
     {

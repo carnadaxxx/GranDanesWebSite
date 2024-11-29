@@ -1,4 +1,4 @@
-﻿using GranDanesWebApp.Models.Entidades;
+﻿using GranDanesWebSite.Models;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -13,36 +13,36 @@ namespace GranDanesWebSite.Repository
             _connectionString = connectionString;
         }
 
-        public Cliente ObtenerClientePorID(int clienteID) 
-        { 
+        public Cliente ObtenerClientePorID(int clienteID)
+        {
             Cliente cliente = null;
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
-            { 
-                SqlCommand command = new SqlCommand("SELECT * FROM Clientes WHERE ClienteID = @ClienteID", connection); 
-                command.Parameters.AddWithValue("@ClienteID", clienteID); 
-                command.CommandType = CommandType.Text; connection.Open(); 
-                SqlDataReader reader = command.ExecuteReader(); 
+            {
+                SqlCommand command = new SqlCommand("SELECT * FROM Clientes WHERE ClienteID = @ClienteID", connection);
+                command.Parameters.AddWithValue("@ClienteID", clienteID);
+                command.CommandType = CommandType.Text; connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
 
-                if (reader.Read()) 
-                { 
-                    cliente = new Cliente 
-                    { 
-                        ClienteID = Convert.ToInt32(reader["ClienteID"]), 
-                        Nombre = reader["Nombre"].ToString(), 
-                        Apellido = reader["Apellido"].ToString(), 
-                        Email = reader["Email"].ToString(), 
-                        Telefono = reader["Telefono"].ToString(), 
-                        Direccion = reader["Direccion"].ToString(), 
+                if (reader.Read())
+                {
+                    cliente = new Cliente
+                    {
+                        ClienteID = Convert.ToInt32(reader["ClienteID"]),
+                        Nombre = reader["Nombre"].ToString(),
+                        Apellido = reader["Apellido"].ToString(),
+                        Email = reader["Email"].ToString(),
+                        Telefono = reader["Telefono"].ToString(),
+                        Direccion = reader["Direccion"].ToString(),
                         FechaRegistro = reader["FechaRegistro"] != DBNull.Value ? Convert.ToDateTime(reader["FechaRegistro"]) : (DateTime?)null,
-                        Visible = reader["Visible"] != DBNull.Value ? Convert.ToBoolean(reader["Visible"]) : (bool?)null, 
-                        Contraseña = reader["Contraseña"].ToString(), 
-                        UltimoAcceso = reader["UltimoAcceso"] != DBNull.Value ? Convert.ToDateTime(reader["UltimoAcceso"]) : (DateTime?)null 
+                        Visible = reader["Visible"] != DBNull.Value ? Convert.ToBoolean(reader["Visible"]) : (bool?)null,
+                        Contraseña = reader["Contraseña"].ToString(),
+                        UltimoAcceso = reader["UltimoAcceso"] != DBNull.Value ? Convert.ToDateTime(reader["UltimoAcceso"]) : (DateTime?)null
                     };
-                } 
+                }
                 reader.Close();
-            } 
-            return cliente; 
+            }
+            return cliente;
         }
 
         public void ActualizarCliente(Cliente cliente)
@@ -64,6 +64,59 @@ namespace GranDanesWebSite.Repository
                 command.ExecuteNonQuery();
             }
         }
+
+        public List<Prestamo> ObtenerPrestamosPendientesPorCliente(int clienteID)
+        {
+            List<Prestamo> prestamos = new List<Prestamo>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_ObtenerPrestamosPendientesPorCliente", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@ClienteID", clienteID);
+
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Prestamo prestamo = new Prestamo
+                    {
+                        PrestamoID = Convert.ToInt32(reader["PrestamoID"]),
+                        ClienteID = Convert.ToInt32(reader["ClienteID"]),
+                        MontoTotal = Convert.ToDecimal(reader["MontoTotal"]),
+                        MontoConIntereses = Convert.ToDecimal(reader["MontoConIntereses"]),
+                        TasaInteres = Convert.ToDecimal(reader["TasaInteres"]),
+                        FechaPrestamo = Convert.ToDateTime(reader["FechaPrestamo"]),
+                        FechaVencimiento = Convert.ToDateTime(reader["FechaVencimiento"]),
+                        Estado = reader["Estado"].ToString(),
+                        NumeroCuotas = Convert.ToInt32(reader["NumeroCuotas"]),
+                        FrecuenciaPago = reader["FrecuenciaPago"].ToString()
+                    };
+                    prestamos.Add(prestamo);
+                }
+
+                reader.Close();
+            }
+
+            return prestamos;
+        }
+
+        public bool ValidarCliente(string email, string contraseña)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_ValidarClienteWeb", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@Email", email);
+                command.Parameters.AddWithValue("@Contraseña", contraseña);
+
+                connection.Open();
+                return (bool)command.ExecuteScalar();
+            }
+        }
+
 
     }
 }

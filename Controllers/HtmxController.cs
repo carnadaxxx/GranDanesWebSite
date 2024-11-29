@@ -1,5 +1,4 @@
-﻿using GranDanesWebApp.Models.Entidades;
-using GranDanesWebSite.Models;
+﻿using GranDanesWebSite.Models;
 using GranDanesWebSite.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,13 +14,14 @@ namespace GranDanesWebSite.Controllers
 
         public IActionResult DetallesCliente(int id)
         {
-            var cliente = _clienteRepository.ObtenerClientePorID(id); 
-            
-            if (cliente == null) { 
+            var cliente = _clienteRepository.ObtenerClientePorID(id);
+
+            if (cliente == null)
+            {
                 return NotFound();
             }
 
-            return View(cliente);
+            return PartialView(cliente);
         }
 
 
@@ -45,7 +45,7 @@ namespace GranDanesWebSite.Controllers
                 Direccion = cliente.Direccion
             };
 
-            return View(model);
+            return PartialView(model);
         }
 
 
@@ -79,8 +79,19 @@ namespace GranDanesWebSite.Controllers
                 return StatusCode(204); // No Content
             }
 
-            return View(model);
+            return PartialView(model);
         }
 
+        [HttpGet]
+        public IActionResult PrestamosPendientesPorCliente(int id)
+        {
+            var prestamosPendientes = _clienteRepository.ObtenerPrestamosPendientesPorCliente(id);
+
+            //if (prestamosPendientes == null || prestamosPendientes.Count == 0)
+            //{ return NotFound("No se encontraron préstamos pendientes para este cliente."); }
+
+            return PartialView(prestamosPendientes);
+
+        }
     }
 }

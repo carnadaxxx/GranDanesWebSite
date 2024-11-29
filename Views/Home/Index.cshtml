@@ -3,16 +3,23 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+   
+    <div class="row">
+        <div class="col-md-3 col-sm-12">
+            <div class="mt-3" hx-get="@Url.Action("DetallesCliente", "Htmx", new { id = 1 })" hx-target="this" hx-trigger="load, detalleClienteChange from:body">
+                cargando ...
+            </div>
+        </div>
 
-    <div class="mt-3" hx-get="/Htmx/DetallesCliente/1" hx-target="this" hx-trigger="load, detalleClienteChange from:body">
-        cargando ...
+        <div class="col-md-9 col-sm-12">
+            <div class="mt-3" hx-get="@Url.Action("PrestamosPendientesPorCliente", "Htmx", new { id = 1 })" hx-target="this" hx-trigger="load">
+                cargando ...
+            </div>
+        </div>
     </div>
 
-
     <div id="id-modal-block" class="modal">
-        <div id="id-modal-dialog-block" class="modal-dialog modal-fullscreen" hx-target="this">
+        <div id="id-modal-dialog-block" class="modal-dialog" hx-target="this">
         </div>
     </div>
 
