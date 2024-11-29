@@ -17,7 +17,8 @@ namespace GranDanesWebSite.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var clienteID = User.Claims.FirstOrDefault(c => c.Type == "ClienteID")?.Value; 
+            ViewBag.ClienteID = clienteID; return View();
         }
 
         public IActionResult Privacy()

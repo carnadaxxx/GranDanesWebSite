@@ -102,7 +102,7 @@ namespace GranDanesWebSite.Repository
             return prestamos;
         }
 
-        public bool ValidarCliente(string email, string contraseña)
+        public (bool EsValido, int? ClienteID) ValidarCliente(string email, string contraseña)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -113,10 +113,20 @@ namespace GranDanesWebSite.Repository
                 command.Parameters.AddWithValue("@Contraseña", contraseña);
 
                 connection.Open();
-                return (bool)command.ExecuteScalar();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        bool esValido = (bool)reader["EsValido"];
+                        int? clienteID = reader["ClienteID"] as int?;
+                        return (esValido, clienteID);
+                    }
+                    else
+                    {
+                        return (false, null);
+                    }
+                }
             }
         }
-
-
     }
 }

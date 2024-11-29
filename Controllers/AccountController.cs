@@ -27,14 +27,15 @@ namespace GranDanesWebSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool esValido = _clienteRepository.ValidarCliente(model.Email, model.Contraseña);
+                var result = _clienteRepository.ValidarCliente(model.Email, model.Contraseña);
 
-                if (esValido)
+                if (result.EsValido)
                 {
                     var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, model.Email)
-                    };
+            {
+                new Claim(ClaimTypes.Name, model.Email),
+                new Claim("ClienteID", result.ClienteID.ToString())
+            };
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var authProperties = new AuthenticationProperties
@@ -54,7 +55,8 @@ namespace GranDanesWebSite.Controllers
 
             return View(model);
         }
-  
+
+
         public IActionResult Logout()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).Wait();
