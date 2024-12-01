@@ -1,3 +1,4 @@
+using GranDanesWebSite.Repositories;
 using GranDanesWebSite.Repository;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -17,6 +18,9 @@ builder.Services.AddControllersWithViews();
 // Agregar el repositorio como un servicio
 builder.Services.AddScoped<ClienteRepository>(
     provider => new ClienteRepository(builder.Configuration.GetConnectionString("ConnectionString")));
+
+builder.Services.AddScoped<CuotaRepository>(
+    provider => new CuotaRepository(builder.Configuration.GetConnectionString("ConnectionString")));
 
 var app = builder.Build();
 

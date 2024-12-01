@@ -1,4 +1,5 @@
 ﻿using GranDanesWebSite.Models;
+using GranDanesWebSite.Repositories;
 using GranDanesWebSite.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,9 +8,13 @@ namespace GranDanesWebSite.Controllers
     public class HtmxController : Controller
     {
         private readonly ClienteRepository _clienteRepository;
-        public HtmxController(ClienteRepository clienteRepository)
+        private readonly CuotaRepository _cuotaRepository;
+
+
+        public HtmxController(ClienteRepository clienteRepository, CuotaRepository cuotaRepository)
         {
             _clienteRepository = clienteRepository;
+            _cuotaRepository = cuotaRepository;
         }
 
         public IActionResult DetallesCliente(int id)
@@ -87,11 +92,18 @@ namespace GranDanesWebSite.Controllers
         {
             var prestamosPendientes = _clienteRepository.ObtenerPrestamosPendientesPorCliente(id);
 
-            //if (prestamosPendientes == null || prestamosPendientes.Count == 0)
-            //{ return NotFound("No se encontraron préstamos pendientes para este cliente."); }
-
             return PartialView(prestamosPendientes);
 
+        }
+
+
+        [HttpGet]
+        public IActionResult VerCoutasPorPrestamos(int id) {
+        
+            var cuotas = _cuotaRepository.ObtenerCuotasPorPrestamo(id);
+
+            return PartialView(cuotas);
+        
         }
     }
 }

@@ -25,7 +25,12 @@
                 <tbody>
                     @foreach (var prestamo in Model)
                     {
-                        <tr>
+                        <tr 
+                            hx-get="@Url.Action("VerCoutasPorPrestamos", "Htmx", new { id = @prestamo.PrestamoID })" 
+                            hx-sawp="innerHTML" 
+                            hx-trigger="click" 
+                            hx-target="#id-modal-dialog-block"
+                        >
                             <td>@prestamo.PrestamoID</td>
                             <td>@prestamo.MontoTotal</td>
                             <td>@prestamo.MontoConIntereses</td>

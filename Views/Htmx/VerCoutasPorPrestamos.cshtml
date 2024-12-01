@@ -1,0 +1,42 @@
+﻿@model List<GranDanesWebSite.Models.Cuota>
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Cuotas Por Prestamos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body">
+        <h3>Cuotas Por Prestamo</h3>
+
+        <table> 
+            <thead> 
+                <tr> 
+                    <th>CuotaID</th> 
+                    <th>PrestamoID</th> 
+                    <th>Número de Cuota</th> 
+                    <th>Monto de Cuota</th> 
+                    <th>Fecha de Vencimiento</th> 
+                    <th>Estado</th> 
+                    <th>Fecha de Pago</th> 
+                </tr> 
+            </thead> 
+            <tbody> 
+                @foreach (var cuota in Model)
+                {
+                    <tr> 
+                        <td>@cuota.CuotaID</td> 
+                        <td>@cuota.PrestamoID</td> 
+                        <td>@cuota.NumeroCuota</td> 
+                        <td>@cuota.MontoCuota</td> 
+                        <td>@cuota.FechaVencimiento.ToShortDateString()</td> 
+                        <td>@cuota.Estado</td> 
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+    </div>
+</div>
