@@ -91,7 +91,8 @@ namespace GranDanesWebSite.Repository
                         FechaVencimiento = Convert.ToDateTime(reader["FechaVencimiento"]),
                         Estado = reader["Estado"].ToString(),
                         NumeroCuotas = Convert.ToInt32(reader["NumeroCuotas"]),
-                        FrecuenciaPago = reader["FrecuenciaPago"].ToString()
+                        FrecuenciaPago = reader["FrecuenciaPago"].ToString(),
+                        EstadoAprobacion = reader["EstadoAprobacion"].ToString()
                     };
                     prestamos.Add(prestamo);
                 }

@@ -14,5 +14,6 @@ namespace GranDanesWebSite.Models
         public string Estado { get; set; }
         public int NumeroCuotas { get; set; }
         public string FrecuenciaPago { get; set; }
+        public string EstadoAprobacion { get; set; }
     }
 }

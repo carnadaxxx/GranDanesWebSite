@@ -14,7 +14,19 @@
         <p><strong>Visible:</strong> @(Model.Visible.HasValue && Model.Visible.Value ? "Sí" : "No")</p>
         <p><strong>Último Acceso:</strong> @Model.UltimoAcceso?.ToString("dd/MM/yyyy HH:mm:ss")</p>
 
-        <button hx-get="@Url.Action("ModificarCliente", "Htmx", new {id = Model.ClienteID})" hx-sawp="innerHTML" hx-trigger="click" hx-target="#id-modal-dialog-block" type="button" class="btn btn-primary">Modificar</button>
+        <button 
+            hx-get="@Url.Action("ModificarCliente", "Htmx", new {id = Model.ClienteID})" 
+            hx-sawp="innerHTML" 
+            hx-trigger="click" 
+            hx-target="#id-modal-dialog-block" 
+            type="button" class="btn btn-primary">Modificar</button>
+
+        <button 
+            hx-get="@Url.Action("SolicitarPrestamo", "Htmx", new {id = Model.ClienteID})"
+            hx-sawp="innerHTML" 
+            hx-trigger="click" 
+            hx-target="#id-modal-dialog-block" 
+            type="button" class="btn btn-primary">Solicitar Prestamo</button>
 
     </div>
 </div>

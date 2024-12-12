@@ -9,12 +9,20 @@ namespace GranDanesWebSite.Controllers
     {
         private readonly ClienteRepository _clienteRepository;
         private readonly CuotaRepository _cuotaRepository;
+        private readonly PrestamoRepository _prestamoRepository;
+        private readonly ConfiguracionRepository _configuracionRepository;
 
-
-        public HtmxController(ClienteRepository clienteRepository, CuotaRepository cuotaRepository)
+        public HtmxController(
+            ClienteRepository clienteRepository, 
+            CuotaRepository cuotaRepository, 
+            PrestamoRepository prestamoRepository,
+            ConfiguracionRepository configuracionRepository
+            )
         {
             _clienteRepository = clienteRepository;
             _cuotaRepository = cuotaRepository;
+            _prestamoRepository = prestamoRepository;
+            _configuracionRepository = configuracionRepository;
         }
 
         public IActionResult DetallesCliente(int id)
@@ -104,6 +112,50 @@ namespace GranDanesWebSite.Controllers
 
             return PartialView(cuotas);
         
+        }
+
+
+        [HttpGet]
+        public IActionResult SolicitarPrestamo(int id)
+        {
+            // Obtener la tasa de interés por defecto desde la configuración
+            string tasaPorDefectoString = _configuracionRepository.ObtenerConfiguracion("TasaInteresPorDefecto");
+            string numeroCoutasPorDefecto = _configuracionRepository.ObtenerConfiguracion("NumeroDeCuotasPorDefecto");
+
+            if (decimal.TryParse(tasaPorDefectoString, out decimal tasaPorDefecto) && int.TryParse(numeroCoutasPorDefecto, out int numeroPagosPorDefecto))
+            {
+                var model = new PrestamoInModel
+                {
+                    ClienteID = id,
+                    TasaInteres = tasaPorDefecto,
+                    NumeroCuotas = numeroPagosPorDefecto
+                };
+                return PartialView(model);
+            }
+            else
+            {
+                // Manejo de error en caso de que no se pueda convertir la tasa de interés a decimal
+                ModelState.AddModelError(string.Empty, "No se pudo obtener la tasa de interés por defecto.");
+                return PartialView(new PrestamoInModel { ClienteID = id });
+            }
+        }
+
+
+        [HttpPost]
+        public IActionResult SolicitarPrestamo(int id, PrestamoInModel model)
+        {
+            {
+                if (ModelState.IsValid) { 
+                    _prestamoRepository.CrearPrestamo(model);
+
+                    ViewBag.Message = "Préstamo solicitado con éxito.";
+
+                    Response.Headers["HX-Trigger"] = "detalleClienteChange";
+                    return StatusCode(204); // No Content
+
+                }
+                return PartialView(model);
+            }
         }
     }
 }

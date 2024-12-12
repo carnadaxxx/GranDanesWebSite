@@ -13,7 +13,6 @@
         public bool? Visible { get; set; }
         public string Contraseña { get; set; }
         public DateTime? UltimoAcceso { get; set; }
-
+    
     }
-
 }

@@ -22,6 +22,13 @@ builder.Services.AddScoped<ClienteRepository>(
 builder.Services.AddScoped<CuotaRepository>(
     provider => new CuotaRepository(builder.Configuration.GetConnectionString("ConnectionString")));
 
+builder.Services.AddScoped<PrestamoRepository>(
+    provider => new PrestamoRepository(builder.Configuration.GetConnectionString("ConnectionString")));
+
+builder.Services.AddScoped<ConfiguracionRepository>(
+    provider => new ConfiguracionRepository(builder.Configuration.GetConnectionString("ConnectionString")));
+
+
 var app = builder.Build();
 
 // Configurar el pipeline de solicitudes HTTP

@@ -1,0 +1,58 @@
+﻿@using GranDanesWebSite.Models
+@model PrestamoInModel
+
+<form class="modal-content" hx-post="@Url.Action("SolicitarPrestamo", "htmx", new { id = Model.ClienteID })">
+    <div class="modal-header">
+        <h5 class="modal-title">Solicitar Prestamo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" }) <!-- Mostrar mensajes de error aquí -->
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ClienteID)
+                @Html.EditorFor(model => model.ClienteID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.ClienteID, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MontoTotal)
+                @Html.EditorFor(model => model.MontoTotal, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MontoTotal, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.NumeroCuotas)
+                @Html.EditorFor(model => model.NumeroCuotas, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NumeroCuotas, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FrecuenciaPago)
+                @Html.DropDownListFor(model => model.FrecuenciaPago, new SelectList(new[] { "Mensual", "Quincenal" }), new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.FrecuenciaPago, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TasaInteres)
+                @Html.EditorFor(model => model.TasaInteres, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TasaInteres, "", new { @class = "text-danger" })
+            </div>
+        }
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success">
+                @ViewBag.Message
+            </div>
+        }
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Crear Préstamo</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+    </div>
+</form>
