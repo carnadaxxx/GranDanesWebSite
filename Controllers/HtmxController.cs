@@ -153,8 +153,22 @@ namespace GranDanesWebSite.Controllers
                     Response.Headers["HX-Trigger"] = "detalleClienteChange";
                     return StatusCode(204); // No Content
 
+                } else
+                {
+                    // Obtener la tasa de interés por defecto desde la configuración
+                    string tasaPorDefectoString = _configuracionRepository.ObtenerConfiguracion("TasaInteresPorDefecto"); 
+                    string numeroCuotasPorDefectoString = _configuracionRepository.ObtenerConfiguracion("NumeroDeCuotasPorDefecto"); 
+                    
+                    if (decimal.TryParse(tasaPorDefectoString, out decimal tasaPorDefecto) && int.TryParse(numeroCuotasPorDefectoString, out int numeroCuotasPorDefecto)) 
+                    {
+                        model.ClienteID = id;
+                        model.TasaInteres = tasaPorDefecto; 
+                        model.NumeroCuotas = numeroCuotasPorDefecto; 
+                    } 
+                    return PartialView(model);
+
                 }
-                return PartialView(model);
+
             }
         }
     }
