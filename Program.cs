@@ -15,6 +15,11 @@ builder.Services.AddAuthorization();
 // Agregar servicios al contenedor
 builder.Services.AddControllersWithViews();
 
+// Load configuration from appsettings.json and appsettings.Local.json
+builder.Configuration 
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true) 
+    .AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
+
 // Agregar el repositorio como un servicio
 builder.Services.AddScoped<ClienteRepository>(
     provider => new ClienteRepository(builder.Configuration.GetConnectionString("ConnectionString")));
